@@ -1,19 +1,22 @@
+// Import dependencies
 const express = require('express');
 var connection = require('./config/db.js');
+
+// Initialize express
 var app = express();
 
-// enable body parsing
+// Enable body parsing
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get('/users', (req, res) => {
-  connection.query('SELECT * FROM users', (err, result, fields) => {
+// Define api route
+app.get('/api/:id', (req, res) => {
+  connection.query(`SELECT * FROM ${req.query.id}`, (err, result) => {
     res.json(result);
   });
 });
 
-app.listen(80, (err, res) => {
-  if (err) throw err;
-
+// Start server
+app.listen(80, () => {
   console.log('Listening on port 80');
 });
