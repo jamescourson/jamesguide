@@ -11,9 +11,13 @@ app.use(express.urlencoded());
 
 // Define api route
 app.get('/api/:id', (req, res) => {
+  connection.connect();
+
   connection.query(`SELECT * FROM ${req.query.id}`, (err, result) => {
     res.json(result);
   });
+
+  connection.end();
 });
 
 // Start server
