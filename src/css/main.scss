@@ -1,0 +1,200 @@
+// Import font
+@import url('https://fonts.googleapis.com/css?family=Overpass+Mono');
+
+// Colors
+$bg-color: #0B6623;
+$shadow: #101010;
+$selection: #ED9B21;
+$grey: #BCBCBC;
+$blue: #3D7DC8;
+
+$color-header: #0B6623;
+$color-main: #FCBC84;
+$color-item: #3D7DC8;
+
+// Images
+$bg-img: url('../img/bg.png');
+
+// Reset all elements
+* {
+  margin: 0;
+  padding: 0;
+}
+
+// Universal element styling
+a {
+  color: black;
+
+  &:hover {
+    color: white;
+  }
+}
+
+form {
+  input {
+    font-size: 1em;
+  
+    padding: .25em;
+    margin-bottom: .25em ;
+    border: 1px solid black;
+  }
+  
+  button {
+    font-size: .75em;
+    background-color: $grey;
+  
+    padding: .25em;
+    border: 1px solid black;
+  
+    &:hover {
+      background-color: $selection;
+    }
+  }
+}
+
+// Mobile query
+@media screen and (max-width: 700px) {
+  .header-logo {
+    width: 300px;
+  }
+
+  .app-main {
+    flex-direction: column;
+
+    padding: 1em;
+
+    > * {
+      margin-bottom: 1em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Desktop query
+@media screen and (min-width: 700px) {
+  .header-logo {
+    width: 350px;
+  }
+
+  .app-main {
+    flex-direction: row;
+
+    padding: 2em 5em;
+
+    .main-sidebar {
+      flex: 1;
+    }
+
+    .main-content {
+      flex: 3;
+
+      margin-left: 2em;
+    }
+  }
+}
+
+// Main app styles
+.app {
+  display: flex;
+  flex-direction: column;
+  
+  font-family: 'Overpass Mono', monospace;
+  
+  .app-header {
+    text-align: center;
+    background-color: $color-header;
+    
+    padding: 1em;
+    box-shadow: 0 4px 4px $shadow;
+
+    z-index: 2;
+
+    .header-logo {
+      border-bottom: 2px solid $color-header;
+      transition: border-bottom 250ms ease;
+
+      &:hover {
+        border-bottom: 2px solid $selection;
+      }
+    }
+  }
+
+  .app-main {
+    display: flex;
+
+    background-image: $bg-img;
+
+    z-index: 1;
+    
+    .main-sidebar {
+      display: flex;
+      flex-direction: column;
+
+      > * {
+        display: block;
+        background-color: $blue;
+
+        padding: .5em;
+        margin-bottom: 1em;
+        border: 1px solid $shadow;
+        box-shadow: 2px 2px 0 $shadow;
+      }
+
+      .sidebar-content {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+
+      .content-types {
+        display: flex;
+        flex-direction: row;
+
+        margin-bottom: 1em;
+
+        > * {
+          background-color: $blue;
+
+          padding: .5em;
+          margin-right: .5em;
+          border: 1px solid $shadow;
+          box-shadow: 2px 2px 0 $shadow;
+          
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+
+      .forum {
+        background-color: $blue;
+        
+        padding: .5em;
+        margin-bottom: 1em;
+        border: 1px solid $shadow;
+        box-shadow: 2px 2px 0 $shadow;
+      
+        &:last-child {
+          margin-bottom: 0;
+        }
+        
+        &:hover {
+          a {
+            color: white;
+          }
+        }
+
+        a {
+          transition: color 250ms ease;
+        }
+      }
+    }
+  }
+}

@@ -19,9 +19,18 @@ app.use(function(req, res, next) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Define api route
+// API routes
 app.get('/api/:id', (req, res) => {
   connection.query(`SELECT * FROM ${req.params.id}`, (err, result) => {
+    res.json(result);
+  });
+});
+
+// Auth routes
+app.post('/api/login', (req, res) => {
+  let data = req.body;
+
+  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, result) => {
     res.json(result);
   });
 });
