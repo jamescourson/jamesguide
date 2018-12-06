@@ -30,17 +30,25 @@ app.get('/api/:id', (req, res) => {
 app.post('/api/login', (req, res) => {
   let data = req.body;
 
-  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, result) => {
-    res.json(result);
+  // parse data
+
+  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, rows, fields) => {
+     res.json(rows);
   });
 });
 
 app.post('/api/register', (req, res) => {
   let data = req.body;
 
-  connection.query(`INSERT INTO users (username, email, password) VALUES (${data.username}, ${data.email}, ${data.password})`, (err, result) => {
-    res.json(result);
+  // Check for duplicate username
+  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, rows, fields) => {
+    if (rows.length == 0) {
+      connection.query(`INSERT INTO users (username, email, password) VALUES (${data.username}, ${data.email}, ${data.password})`, (err, result) => {
+        res.send('Successfully registered!');
+      });
+    }
   });
+
 });
 
 app.get('/', (req, res) => {
