@@ -35,6 +35,14 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+app.post('/api/register', (req, res) => {
+  let data = req.body;
+
+  connection.query(`INSERT INTO users (username, email, password) VALUES (${data.username}, ${data.email}, ${data.password})`, (err, result) => {
+    res.json(result);
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('Welcome to the James\' Guide API!');
 })

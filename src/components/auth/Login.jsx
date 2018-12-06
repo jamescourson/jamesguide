@@ -13,9 +13,7 @@ class Login extends Component {
     let newData = this.state.data;
     newData[e.target.name] = e.target.value;
 
-    this.setState({
-      data: newData
-    });
+    this.setState({ data: newData });
   }
   
   attemptLogin = (e) => {
@@ -23,7 +21,7 @@ class Login extends Component {
 
     axios.post('https://james.guide/api/login', this.state.data)
     .then(res => {
-      console.log(res.data);
+      console.log(res);
     });
   }
 

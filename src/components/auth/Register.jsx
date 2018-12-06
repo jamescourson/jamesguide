@@ -1,6 +1,31 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Register extends Component {
+  state = {
+    data: {
+      username: null,
+      email: null,
+      password: null
+    }
+  }
+
+  handleChange = (e) => {
+    let newData = this.state.data;
+    newData[e.target.name] = e.target.value;
+
+    this.setState({ data: newData });
+  }
+
+  attemptRegister = (e) => {
+    e.preventDefault();
+
+    axios.post('https://james.guide/api/register', this.state.data)
+    .then(res => {
+      console.log(res);
+    });
+  }
+
   render() {
     return (
       <form className="register">
