@@ -25,7 +25,7 @@ class Feed extends Component {
         axios.get('https://james.guide/api/forums')
         .then(res => {
           let newForums = [];
-          console.log(res.data);
+          
           res.data.forEach(f => {
             newForums.push(
               <Forum name={f.name} desc={f.description} key={newForums.length + 1}/>

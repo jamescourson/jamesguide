@@ -24,7 +24,6 @@ class Register extends Component {
 
     // hash user password
     let registerData = this.state.data;
-    console.log(this.state);
     
     bcrypt.hash(registerData.password, 10, (err, hash) => {
       registerData.password = hash;
@@ -32,13 +31,11 @@ class Register extends Component {
 
     axios.get('https://james.guide/api/users')
     .then(res => {
-      res.data.forEach(i => {
-        console.log(i.username);
-        console.log(registerData.username);
-        if (i.username === registerData.username) {
+      for (let i = 0; i < res.data.length; i++) {
+        if (res.data[i].username === registerData.username) {
           return 'That username is taken.';
         }
-      });
+      }
     });
 
     axios.post('https://james.guide/api/register', registerData)

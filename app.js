@@ -29,20 +29,22 @@ app.get('/api/:id', (req, res) => {
 // Auth routes
 app.post('/api/login', (req, res) => {
   let data = req.body;
+  let query = `SELECT * FROM users WHERE username='${data.username}'`
 
   // parse data
 
-  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, rows, fields) => {
+  connection.query(query, (err, rows, fields) => {
      res.json(rows);
   });
 });
 
 app.post('/api/register', (req, res) => {
   let data = req.body;
+  let query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
 
   // Check for duplicate username
-  connection.query(`INSERT INTO users (username, email, password) VALUES (${data.username}, ${data.email}, ${data.password})`, (err, result) => {
-    res.send('Successfully registered!');
+  connection.query(query, (err, result) => {
+    res.send('Registration successful!');
   });
 });
 
