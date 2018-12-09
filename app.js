@@ -45,8 +45,8 @@ app.post('/api/register', (req, res) => {
   // Check for duplicate username
   connection.query(query, (err, result) => {
     if (err) res.send(err);
-    
-    res.send('Registration successful!');
+
+    res.send(result);
   });
 });
 
