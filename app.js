@@ -20,8 +20,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API routes
-app.get('/api/:id', (req, res) => {
-  connection.query(`SELECT * FROM ${req.params.id}`, (err, result) => {
+app.get('/api/user/:id', (req, res) => {
+  connection.query(`SELECT * FROM users WHERE username='${req.params.id}'`, (err, rows, fields) => {
+    res.json(rows);
+  });
+});
+
+app.get('/api/users', (req, res) => {
+  connection.query('SELECT username FROM users', (err, result) => {
+    res.json(result);
+  });
+});
+
+app.get('/api/forums', (req, res) => {
+  connection.query('SELECT * FROM forums', (err, result) => {
     res.json(result);
   });
 });
@@ -30,8 +42,6 @@ app.get('/api/:id', (req, res) => {
 app.post('/api/login', (req, res) => {
   let data = req.body;
   let query = `SELECT * FROM users WHERE username='${data.username}'`
-
-  // parse data
 
   connection.query(query, (err, rows, fields) => {
      res.json(rows);
@@ -44,9 +54,7 @@ app.post('/api/register', (req, res) => {
 
   // Check for duplicate username
   connection.query(query, (err, result) => {
-    if (err) res.send(err);
-
-    res.send(result);
+    res.send('Registration successful!');
   });
 });
 

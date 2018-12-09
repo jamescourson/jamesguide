@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 
 class Login extends Component {
   state = {
@@ -18,6 +19,11 @@ class Login extends Component {
   
   attemptLogin = (e) => {
     e.preventDefault();
+
+    axios.get(`https://james.guide/api/user/${this.state.data.username}`)
+    .then(res => {
+      console.log(res);
+    });
 
     axios.post('https://james.guide/api/login', this.state.data)
     .then(res => {

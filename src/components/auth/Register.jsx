@@ -22,13 +22,25 @@ class Register extends Component {
   attemptRegister = (e) => {
     e.preventDefault();
 
-    // hash user password
     let registerData = this.state.data;
-    
-    bcrypt.hash(registerData.password, 10, (err, hash) => {
-      registerData.password = hash;
-    });
 
+    let allFieldsFilled = Object.values(registerData).includes(null);
+    let passwordsMatch = registerData.password === this.state.data.password_repeat;
+
+    // Check if all fields are filled in
+    if (allFieldsFilled) {
+      return 'Please fill in every field.';
+    }
+
+    // Check to see if passwords match
+    if (!passwordsMatch) {
+      return 'Your passwords do not match.';
+    }
+
+    // Hash password
+    registerData.password = bcrypt.hashSync(registerData.password, 10);
+
+    // Check for duplicate usernames
     axios.get('https://james.guide/api/users')
     .then(res => {
       for (let i = 0; i < res.data.length; i++) {
@@ -40,20 +52,25 @@ class Register extends Component {
 
     axios.post('https://james.guide/api/register', registerData)
     .then(res => {
+      return res;
     });
+  }
+
+  registerHandler = (e) => {
+    console.log(this.attemptRegister(e));
   }
 
   render() {
     return (
-      <form onSubmit={this.attemptRegister} className="register" method="post">
+      <form onSubmit={this.registerHandler} className="register" method="post">
         <h3>Register for James' Guide.</h3>
         <input name="username" placeholder="Username" onChange={this.handleChange} />
         <br />
         <input name="email" placeholder="Email" onChange={this.handleChange} />
         <br />
-        <input name="password" placeholder="Password" onChange={this.handleChange} />
+        <input name="password" type="password" placeholder="Password" onChange={this.handleChange} />
         <br />
-        <input name="password_repeat" placeholder="Repeat" onChange={this.handleChange} />
+        <input name="password_repeat" type="password" placeholder="Repeat" onChange={this.handleChange} />
         <br />
         <button>Register</button>
         <br /><br />
