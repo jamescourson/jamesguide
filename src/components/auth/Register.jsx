@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 
 class Register extends Component {
   state = {
     data: {
       username: null,
       email: null,
-      password: null
+      password: null,
+      password_repeat: null
     }
   }
 
@@ -20,23 +22,41 @@ class Register extends Component {
   attemptRegister = (e) => {
     e.preventDefault();
 
-    axios.post('https://james.guide/api/register', this.state.data)
+    // hash user password
+    let registerData = this.state.data;
+    console.log(this.state);
+    
+    bcrypt.hash(registerData.password, 10, (err, hash) => {
+      registerData.password = hash;
+    });
+
+    axios.get('https://james.guide/api/users')
     .then(res => {
-      console.log(res);
+      res.data.forEach(i => {
+        console.log(i.username);
+        console.log(registerData.username);
+        if (i.username === registerData.username) {
+          return 'That username is taken.';
+        }
+      });
+    });
+
+    axios.post('https://james.guide/api/register', registerData)
+    .then(res => {
     });
   }
 
   render() {
     return (
-      <form className="register">
+      <form onSubmit={this.attemptRegister} className="register" method="post">
         <h3>Register for James' Guide.</h3>
-        <input placeholder="Username" />
+        <input name="username" placeholder="Username" onChange={this.handleChange} />
         <br />
-        <input placeholder="Email" />
+        <input name="email" placeholder="Email" onChange={this.handleChange} />
         <br />
-        <input placeholder="Password" />
+        <input name="password" placeholder="Password" onChange={this.handleChange} />
         <br />
-        <input placeholder="Repeat" />
+        <input name="password_repeat" placeholder="Repeat" onChange={this.handleChange} />
         <br />
         <button>Register</button>
         <br /><br />

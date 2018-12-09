@@ -13,7 +13,7 @@ const authStates = {
 class AuthBox extends Component {
   state = {
     authType: authStates.login,
-    content: <Login />
+    content: <Register />
   }
 
   update() {
@@ -21,7 +21,7 @@ class AuthBox extends Component {
     // update this.state.authType accordingly
     this.setState({
       authType: authStates.login,
-      content: <Login />
+      content: <Register />
     });
   }
 

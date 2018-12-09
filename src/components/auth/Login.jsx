@@ -27,13 +27,13 @@ class Login extends Component {
 
   render() {
     return (
-      <form onSubmit={this.submit} className="login" method="post">
+      <form onSubmit={this.attemptLogin} className="login" method="post">
         <h3>You aren't logged in.</h3>
         <input name="username" type="text" placeholder="Username" onChange={this.handleChange} />
         <br />
         <input name="password" type="password" placeholder="Password" onChange={this.handleChange} />
         <br />
-        <button onClick={this.attemptLogin}>Log in</button>
+        <button>Log in</button>
         <br /><br />
         <span>Not a member yet? </span>
         <button>Register</button>

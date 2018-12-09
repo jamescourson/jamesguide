@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // API routes
 app.get('/api/:id', (req, res) => {
-  connection.query(`SELECT * FROM ${req.params.id}`, (err, result) => {
+  connection.query(`SELECT username FROM ${req.params.id}`, (err, result) => {
     res.json(result);
   });
 });
@@ -41,14 +41,9 @@ app.post('/api/register', (req, res) => {
   let data = req.body;
 
   // Check for duplicate username
-  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, rows, fields) => {
-    if (rows.length == 0) {
-      connection.query(`INSERT INTO users (username, email, password) VALUES (${data.username}, ${data.email}, ${data.password})`, (err, result) => {
-        res.send('Successfully registered!');
-      });
-    }
+  connection.query(`INSERT INTO users (username, email, password) VALUES (${data.username}, ${data.email}, ${data.password})`, (err, result) => {
+    res.send('Successfully registered!');
   });
-
 });
 
 app.get('/', (req, res) => {
