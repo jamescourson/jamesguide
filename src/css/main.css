@@ -106,11 +106,6 @@ form button:hover {
   box-shadow: 2px 2px 0 #101010;
 }
 
-.app .app-main .main-sidebar .sidebar-content {
-  display: flex;
-  flex-direction: column;
-}
-
 .app .app-main .main-content {
   display: flex;
   flex-direction: column;

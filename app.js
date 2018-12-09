@@ -1,6 +1,9 @@
 // Import dependencies
 const express = require('express');
+const path = require('path');
+var cookieParser = require('cookie-parser');
 var connection = require('./config/db.js');
+import bcrypt from 'bcryptjs';
 
 // Initialize express
 var app = express();
@@ -18,6 +21,10 @@ app.use(function(req, res, next) {
 // Enable body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Locate static resources
+app.use(express.static(path.join(__dirname, 'build')));
 
 // API routes
 app.get('/api/user/:id', (req, res) => {
@@ -44,17 +51,31 @@ app.post('/api/login', (req, res) => {
   let query = `SELECT * FROM users WHERE username='${data.username}'`
 
   connection.query(query, (err, rows, fields) => {
-     res.json(rows);
+    for (let i = 0; i < rows.length; i++) {
+      // Verify user password
+      if (bcrypt.compareSync(data.password, rows[i].password)) {
+        res.cookie('user', rows[i], { maxAge: 90000, secure: true });
+        res.send(`Welcome, ${rows[i].username}!`);
+      }
+    }
   });
 });
 
 app.post('/api/register', (req, res) => {
   let data = req.body;
-  let query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
 
-  // Check for duplicate username
-  connection.query(query, (err, result) => {
-    res.send('Registration successful!');
+  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, rows, fields) => {
+    if (rows.length === 0) {
+      let query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
+    
+      // Check for duplicate username
+      connection.query(query, (err, result) => {
+        res.send('Registration successful!');
+      });
+    }
+    else {
+      res.send('That username is already taken.');
+    }
   });
 });
 

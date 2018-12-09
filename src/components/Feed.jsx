@@ -38,6 +38,9 @@ class Feed extends Component {
       case feedTypes.market:
 
         break;
+      default:
+      
+        break;
     }
   }
 

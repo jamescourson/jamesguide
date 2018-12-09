@@ -13,20 +13,29 @@ const authStates = {
 class AuthBox extends Component {
   state = {
     authType: authStates.login,
-    content: <Register />
+    content: null
   }
 
-  update() {
-    // fetch user loggedin data from API
-    // update this.state.authType accordingly
+  componentWillMount = () => {
     this.setState({
       authType: authStates.login,
-      content: <Register />
+      content: <Login switch={this.switch} />
     });
   }
 
-  componentWillMount() {
-    this.update();
+  switch = () => {
+    if (this.state.authType === authStates.login) {
+      this.setState({
+        authType: authStates.register,
+        content: <Register switch={this.switch} />
+      });
+    }
+    else {
+      this.setState({
+        authType: authStates.login,
+        content: <Login switch={this.switch} />
+      });
+    }
   }
 
   render() {
