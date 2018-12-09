@@ -80,7 +80,7 @@ app.post('/api/register', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the James\' Guide API!');
+  res.sendFile('./build/index.html');
 })
 
 // Start server
