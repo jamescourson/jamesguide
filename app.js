@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Locate static resources
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // API routes
 app.get('/api/user/:id', (req, res) => {
@@ -80,7 +80,7 @@ app.post('/api/register', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile('./build/index.html');
+  res.send('Welcome to the James\' Guide API!');
 })
 
 // Start server
