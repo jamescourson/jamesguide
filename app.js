@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 var cookieParser = require('cookie-parser');
 var connection = require('./config/db.js');
-import bcrypt from 'bcryptjs';
+var bcrypt = require('bcryptjs');
 
 // Initialize express
 var app = express();
