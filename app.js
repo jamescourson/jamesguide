@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // API routes
 app.get('/api/:id', (req, res) => {
-  connection.query(`SELECT username FROM ${req.params.id}`, (err, result) => {
+  connection.query(`SELECT * FROM ${req.params.id}`, (err, result) => {
     res.json(result);
   });
 });
