@@ -64,7 +64,7 @@ app.post('/api/login', (req, res) => {
 app.post('/api/register', (req, res) => {
   let data = req.body;
 
-  connection.query(`SELECT * FROM users WHERE username=${data.username}`, (err, rows, fields) => {
+  connection.query(`SELECT * FROM users WHERE username='${data.username}'`, (err, rows, fields) => {
     if (!rows) {
       let query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
     
