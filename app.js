@@ -54,7 +54,6 @@ app.post('/api/login', (req, res) => {
     for (let i = 0; i < rows.length; i++) {
       // Verify user password
       if (bcrypt.compareSync(data.password, rows[i].password)) {
-        res.cookie('user', rows[i], { maxAge: 90000, secure: true });
         res.send(`Welcome, ${rows[i].username}!`);
       }
     }
@@ -63,12 +62,14 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/register', (req, res) => {
   let data = req.body;
+  let query = `SELECT COUNT(*) AS userCount FROM users WHERE username='${data.username}'`;
+  
+  // Check for duplicate username
+  connection.query(query, (err, rows, fields) => {
+    console.log(rows[0].userCount)
+    if (rows[0].userCount === 0) {
+      query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
 
-  connection.query(`SELECT * FROM users WHERE username='${data.username}'`, (err, rows, fields) => {
-    if (!rows) {
-      let query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
-    
-      // Check for duplicate username
       connection.query(query, (err, result) => {
         res.send('Registration successful!');
       });
