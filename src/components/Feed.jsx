@@ -15,6 +15,10 @@ class Feed extends Component {
     feed: []
   }
 
+  setFeedType(newFeedType) {
+    this.state.feedType = newFeedType;
+  }
+
   populate() {
     switch (this.state.feedType) {
       case feedTypes.games:

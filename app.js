@@ -48,15 +48,10 @@ app.get('/api/forums', (req, res) => {
 // Auth routes
 app.post('/api/login', (req, res) => {
   let data = req.body;
-  let query = `SELECT * FROM users WHERE username='${data.username}'`
+  let query = `SELECT * FROM users WHERE username='${data.username}'`;
 
   connection.query(query, (err, rows, fields) => {
-    for (let i = 0; i < rows.length; i++) {
-      // Verify user password
-      if (bcrypt.compareSync(data.password, rows[i].password)) {
-        res.send(`Welcome, ${rows[i].username}!`);
-      }
-    }
+    res.send(rows);
   });
 });
 
@@ -66,7 +61,6 @@ app.post('/api/register', (req, res) => {
   
   // Check for duplicate username
   connection.query(query, (err, rows, fields) => {
-    console.log(rows[0].userCount)
     if (rows[0].userCount === 0) {
       query = `INSERT INTO users (username, email, password) VALUES ('${data.username}', '${data.email}', '${data.password}')`;
 
