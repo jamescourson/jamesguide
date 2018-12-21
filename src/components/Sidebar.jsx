@@ -2,24 +2,36 @@ import React, { Component } from 'react';
 
 import AuthBox from './AuthBox';
 
-class Sidebar extends Component {
-  state = {
-    content: <>
-      <AuthBox />
+const authStates = {
+  login: 'login',
+  register: 'register',
+  loggedIn: 'loggedIn'
+}
 
-      <section>
-        <h3>About</h3>
-        <p>
-          Welcome to James' Guide!<br />
-          Help me out by signing up, and keep checking back for updates!<br />
-          The database may be wiped multiple times.
-        </p>
-      </section>
-    </>
+class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authState: authStates.login
+    }
   }
 
   render() {
-    return this.state.content;
+    return (
+      <>
+        <AuthBox type={this.state.authState} />
+
+        <section>
+          <h3>About</h3>
+          <p>
+            Welcome to James' Guide!<br />
+            As you can see, there's not much here.
+            Keep checking back for more updates, and help me out by registering!
+          </p>
+        </section>
+      </>
+    );
   }
 }
 

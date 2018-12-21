@@ -16,7 +16,7 @@ class Feed extends Component {
   }
 
   setFeedType(newFeedType) {
-    this.state.feedType = newFeedType;
+    this.setState({ feedType: newFeedType });
   }
 
   populate() {

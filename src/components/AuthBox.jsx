@@ -1,45 +1,67 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import Login from './auth/Login';
 import Register from './auth/Register';
 import Welcome from './auth/Welcome';
 
 const authStates = {
-  login: <Login />,
-  register: <Register />,
-  loggedIn: <Welcome />
+  login: 'login',
+  register: 'register',
+  loggedIn: 'loggedIn'
+}
+
+// getAuthData - fetches user auth status from API
+function getAuthData() {
+  axios.get('/auth')
+  .then(res => {
+    return res.data ? authStates.loggedIn : authStates.login;
+  })
+  .catch(res => {
+    return authStates.login;
+  });
 }
 
 class AuthBox extends Component {
-  state = {
-    authType: authStates.login,
-    content: null
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authType: this.props.type
+    }
   }
 
   componentWillMount = () => {
     this.setState({
-      authType: authStates.login,
-      content: <Login switch={this.switch} />
+      authType: getAuthData()
     });
   }
 
+  // switch - switches authbox state
   switch = () => {
     if (this.state.authType === authStates.login) {
       this.setState({
-        authType: authStates.register,
-        content: <Register switch={this.switch} />
+        authType: authStates.register
       });
     }
     else {
       this.setState({
-        authType: authStates.login,
-        content: <Login switch={this.switch} />
+        authType: authStates.login
       });
     }
   }
 
   render() {
-    return this.state.content;
+    switch(this.state.authType) {
+      case authStates.login:
+        return (<Login switch={this.switch} />);
+      case authStates.register:
+        return (<Register switch={this.switch} />);
+      case authStates.loggedIn:
+        return (<Welcome />);
+      default:
+        return (<Login switch={this.switch} />);
+    }
   }
 }
 
