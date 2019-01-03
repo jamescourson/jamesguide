@@ -111,13 +111,13 @@ form button:hover {
   flex-direction: column;
 }
 
-.app .app-main .main-content .content-types {
+.app .app-main .main-content .content-links {
   display: flex;
   flex-direction: row;
   margin-bottom: 1em;
 }
 
-.app .app-main .main-content .content-types > * {
+.app .app-main .main-content .content-links > * {
   background-color: #3D7DC8;
   padding: .5em;
   margin-right: .5em;
@@ -125,26 +125,31 @@ form button:hover {
   box-shadow: 2px 2px 0 #101010;
 }
 
-.app .app-main .main-content .content-types > *:last-child {
+.app .app-main .main-content .content-links > *:last-child {
   margin-right: 0;
 }
 
-.app .app-main .main-content .forum {
+.app .app-main .main-content .forum, .app .app-main .main-content .profile {
   background-color: #3D7DC8;
   padding: .5em;
   margin-bottom: 1em;
   border: 1px solid #101010;
   box-shadow: 2px 2px 0 #101010;
+  text-decoration: none;
 }
 
-.app .app-main .main-content .forum:last-child {
+.app .app-main .main-content .forum:last-child, .app .app-main .main-content .profile:last-child {
   margin-bottom: 0;
 }
 
-.app .app-main .main-content .forum:hover a {
+.app .app-main .main-content .forum:hover .forum-title, .app .app-main .main-content .profile:hover .forum-title {
   color: white;
 }
 
-.app .app-main .main-content .forum a {
+.app .app-main .main-content .forum .forum-title, .app .app-main .main-content .profile .forum-title {
   transition: color 250ms ease;
+}
+
+.app .app-main .main-content .forum .forum-desc, .app .app-main .main-content .profile .forum-desc {
+  color: black;
 }

@@ -13,7 +13,14 @@ import Feed from './components/Feed';
 
 class App extends Component {
   state = {
-    user: null
+    user: null,
+    feedType: 'boards'
+  }
+
+  setFeedType = (e, newType) => {
+    e.preventDefault();
+
+    this.setState({ feedType: newType });
   }
 
   render() {
@@ -31,13 +38,12 @@ class App extends Component {
           </aside>
 
           <section className="main-content">
-            <nav className="content-types">
-              <a href="/">Games</a>
-              <a href="/">Boards</a>
-              <a href="/">Market</a>
+            <nav className="content-links">
+              <a href="/boards" onClick={(e) => {this.setFeedType(e, 'boards')}}>Boards</a>
+              <a href="/users" onClick={(e) => {this.setFeedType(e, 'users')}}>Users</a>
             </nav>
 
-            <Feed />
+            <Feed type={this.state.feedType} />
           </section>
         </main>
       </div>

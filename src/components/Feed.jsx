@@ -2,29 +2,20 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Forum from './boards/Forum';
-
-const feedTypes = {
-  games: 0,
-  boards: 1,
-  market: 2
-}
+import Profile from './Profile';
 
 class Feed extends Component {
-  state = {
-    feedType: feedTypes.boards,
-    feed: []
-  }
+  constructor(props) {
+    super(props);
 
-  setFeedType(newFeedType) {
-    this.setState({ feedType: newFeedType });
+    this.state = {
+      feed: []
+    }
   }
 
   populate() {
-    switch (this.state.feedType) {
-      case feedTypes.games:
-
-        break;
-      case feedTypes.boards:
+    switch (this.props.type) {
+      case 'boards':
         // Populate forums
         axios.get('https://james.guide/api/forums')
         .then(res => {
@@ -32,24 +23,43 @@ class Feed extends Component {
           
           res.data.forEach(f => {
             newForums.push(
-              <Forum name={f.name} desc={f.description} key={newForums.length + 1}/>
+              <Forum uri={`/f/${f.id}`} view="preview" name={f.name} desc={f.description} key={newForums.length + 1}/>
             );
           });
 
           this.setState({ feed: newForums });
         });
+
         break;
-      case feedTypes.market:
+      case 'users':
+        // Get list of all users
+        axios.get('https://james.guide/api/users')
+        .then(res => {
+          let newUsers = [];
+
+          res.data.forEach(u => {
+            newUsers.push(
+              <Profile uri={`/u/${u.id}`} view="preview" user={u} key={newUsers.length + 1} />
+            );
+          });
+
+          this.setState({ feed: newUsers });
+        });
 
         break;
       default:
-      
         break;
     }
   }
 
   componentWillMount() {
     this.populate();
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.type !== this.props.type) {
+      this.populate();
+    }
   }
 
   render() {

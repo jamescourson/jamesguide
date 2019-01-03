@@ -13,11 +13,13 @@ const authStates = {
 
 // getAuthData - fetches user auth status from API
 function getAuthData() {
-  axios.get('/auth')
+  axios.get('https://james.guide/auth')
   .then(res => {
+    console.log('then')
     return res.data ? authStates.loggedIn : authStates.login;
   })
   .catch(res => {
+    console.log('catch')
     return authStates.login;
   });
 }
@@ -58,6 +60,7 @@ class AuthBox extends Component {
       case authStates.register:
         return (<Register switch={this.switch} />);
       case authStates.loggedIn:
+        console.log('logged in')
         return (<Welcome />);
       default:
         return (<Login switch={this.switch} />);

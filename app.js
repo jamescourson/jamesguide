@@ -5,10 +5,8 @@ var bcrypt = require('bcryptjs');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
-// Initialize database
+// Import sensitive information
 var connection = require('./config/db.js');
-
-// Import cookie secret
 const cookieInfo = require('./config/cookie.js');
 
 // Initialize express
@@ -28,10 +26,19 @@ app.use(function(req, res, next) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Configure session
+app.set('trust proxy', 1);
+
 app.use(session({
   secret: cookieInfo.secret,
   saveUninitialized: false,
-  resave: false
+  resave: false,
+  cookie: {
+    maxAge: 86400000,
+    domain: 'james.guide',
+    secure: true
+  }
 }));
 
 // Locate static resources
@@ -149,6 +156,57 @@ app.get('/auth', (req, res) => { req.session.user ? res.send(req.session.user) :
 // Index
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build/index.html'));
+});
+
+app.get('/f/:id', (req, res) => {
+  // Find requested forum
+  let query = `SELECT * FROM forums WHERE id='${req.params.id}'`;
+
+  connection.query(query, (err, rows, fields) => {
+    if (rows.length > 0) {
+      // Find topics within forum
+      let query = `SELECT * FROM topics WHERE forum='${req.params.id}'`;
+
+      connection.query(query, (t_err, t_rows, t_fields) => {
+        res.json({
+          success: true,
+          content: {
+            forum: rows[0],
+            topics: t_rows
+          }
+        });
+      });
+    }
+    else {
+      res.json({
+        success: false,
+        content: null
+      });
+    }
+  });
+});
+
+app.get('/t/:id', (req, res) => {
+  // Find requested topic
+  let query = `SELECT * FROM topics WHERE id=${req.params.id}`;
+
+  connection.query(query, (err, rows, fields) => {
+    if (rows.length > 0) {
+      res.json({
+        success: true,
+        content: {
+          topic: rows[0],
+          replies: null
+        }
+      })
+    }
+    else {
+      res.json({
+        success: false,
+        content: null
+      });
+    }
+  });
 });
 
 // Start server

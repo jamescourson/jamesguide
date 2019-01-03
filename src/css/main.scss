@@ -148,7 +148,7 @@ form {
       display: flex;
       flex-direction: column;
 
-      .content-types {
+      .content-links {
         display: flex;
         flex-direction: row;
 
@@ -168,26 +168,32 @@ form {
         }
       }
 
-      .forum {
+      .forum, .profile {
         background-color: $blue;
         
         padding: .5em;
         margin-bottom: 1em;
         border: 1px solid $shadow;
         box-shadow: 2px 2px 0 $shadow;
+
+        text-decoration: none;
       
         &:last-child {
           margin-bottom: 0;
         }
         
         &:hover {
-          a {
+          .forum-title {
             color: white;
           }
         }
 
-        a {
+        .forum-title {
           transition: color 250ms ease;
+        }
+
+        .forum-desc {
+          color: black;
         }
       }
     }
